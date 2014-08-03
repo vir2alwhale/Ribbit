@@ -13,9 +13,6 @@ public class RibbitApplication extends Application {
 		super.onCreate();
 		  Parse.initialize(this, "bFMrEz6O2WEoxdanzpYK5YG92NIfhaPlrITMPMjo", "9un2SNN6zjWrZ3rm63sYfVzidpSLHMREdRMKqb4B");
 		  
-		  ParseObject testObject = new ParseObject("TestObject");
-		  testObject.put("foo", "bar");
-		  testObject.saveInBackground();
 		}
 
 }
