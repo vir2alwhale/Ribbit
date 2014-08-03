@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.vir2alwhale.ribbit.LoginActivity" >
+    tools:context="com.vir2alwhale.ribbit.SignUpActivity" >
 
     <EditText
         android:id="@+id/usernameField"
@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:ems="10"
-        android:hint="@string/username_hint" >
+        android:hint="@string/username_hint"
+        android:ems="10" >
 
         <requestFocus />
     </EditText>
@@ -26,25 +26,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/usernameField"
-        android:ems="10"
         android:hint="@string/password_hint"
+        android:ems="10"
         android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/loginButton"
+    <EditText
+        android:id="@+id/emailField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/passwordField"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/passwordField"
-        android:text="@string/login_button_label" />
+        android:hint="@string/email_hint"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
 
-    <TextView
-        android:id="@+id/signUpText"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loginButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        android:text="@string/sign_up_text" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/emailField"
+        android:text="@string/sign_up_button_label" />
 
 </RelativeLayout>
