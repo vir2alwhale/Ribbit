@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_login);
 		
 		mUsername = (EditText) findViewById(R.id.usernameField);
@@ -47,11 +49,13 @@ public class LoginActivity extends Activity {
 					dialog.show();
 				}
 				else {
-					
+					// Login
+					setProgressBarIndeterminate(true);
 					ParseUser.logInInBackground(username, password, new LogInCallback(){
-
 						@Override
 						public void done(ParseUser user, ParseException e) {
+							
+							setProgressBarIndeterminate(false);
 							if (e==null) {
 								// Success!
 								Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -70,7 +74,7 @@ public class LoginActivity extends Activity {
 							}
 						}
 						
-					});					
+					});
 				}
 			}
 		});
