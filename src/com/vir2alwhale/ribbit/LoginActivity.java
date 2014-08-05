@@ -17,11 +17,12 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 public class LoginActivity extends Activity {
-	protected TextView mSignUpTextView;
 	
 	protected EditText mUsername;
 	protected EditText mPassword;
 	protected Button mLoginButton;
+	
+	protected TextView mSignUpTextView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +30,18 @@ public class LoginActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_login);
 		
+		mSignUpTextView = (TextView) findViewById(R.id.signUpText);
+		mSignUpTextView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 		mUsername = (EditText) findViewById(R.id.usernameField);
 		mPassword = (EditText) findViewById(R.id.passwordField);
 		mLoginButton = (Button) findViewById(R.id.loginButton);
-		
 		mLoginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -50,12 +59,13 @@ public class LoginActivity extends Activity {
 				}
 				else {
 					// Login
-					setProgressBarIndeterminate(true);
+					setProgressBarIndeterminateVisibility(true);
+					
 					ParseUser.logInInBackground(username, password, new LogInCallback(){
 						@Override
 						public void done(ParseUser user, ParseException e) {
 							
-							setProgressBarIndeterminate(false);
+							setProgressBarIndeterminateVisibility(false);
 							if (e==null) {
 								// Success!
 								Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -76,17 +86,6 @@ public class LoginActivity extends Activity {
 						
 					});
 				}
-			}
-		});
-		
-		
-		mSignUpTextView = (TextView) findViewById(R.id.signUpText);
-		mSignUpTextView.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-				startActivity(intent);
 			}
 		});
 	}
