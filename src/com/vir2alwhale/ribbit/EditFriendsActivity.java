@@ -1,5 +1,8 @@
 package com.vir2alwhale.ribbit;
 
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +21,14 @@ public class EditFriendsActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.edit_friends, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		ParseQuery<ParseUser> query = ParseUser.getQuery();
+		query.orderByAscending(ParseConstants.KEY_USERNAME);
+		query.setLimit(1000);
 	}
 
 	@Override
