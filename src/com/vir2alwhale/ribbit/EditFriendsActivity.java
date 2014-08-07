@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -15,13 +16,17 @@ import android.widget.ListView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class EditFriendsActivity extends ListActivity {
 	public static final String TAG = EditFriendsActivity.class.getSimpleName();
 	
 	protected List<ParseUser> mUsers;
-
+	protected ParseRelation<ParseUser> mFriendsRelation;
+	protected ParseUser mCurrentUser;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +45,8 @@ public class EditFriendsActivity extends ListActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		mCurrentUser = ParseUser.getCurrentUser();
+		mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
 		setProgressBarIndeterminateVisibility(true);
 		ParseQuery<ParseUser> query = ParseUser.getQuery();
 		query.orderByAscending(ParseConstants.KEY_USERNAME);
@@ -90,5 +97,29 @@ public class EditFriendsActivity extends ListActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		
+		if(getListView().isItemChecked(position)) {
+			// Click selected the Friend.
+			// Adds relation locally.
+			mFriendsRelation.add(mUsers.get(position));	
+			// Save changes to user (adds relation) on parse.com.
+			mCurrentUser.saveInBackground(new SaveCallback() {
+				@Override
+				public void done(ParseException e) {
+					if(e != null) {
+						Log.e(TAG, e.getMessage());
+					}
+				}
+			});
+		}
+		else {
+			// Click unselected the Friend.
+		}
+		
 	}
 }
