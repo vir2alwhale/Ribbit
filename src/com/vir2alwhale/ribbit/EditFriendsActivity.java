@@ -71,6 +71,7 @@ public class EditFriendsActivity extends ListActivity {
 					ArrayAdapter<String> adapter = new ArrayAdapter<String>
 						(EditFriendsActivity.this, android.R.layout.simple_list_item_checked, usernames);
 					setListAdapter(adapter);
+					addFriendCheckmarks();
 				}
 				else {
 					Log.e(TAG, e.getMessage());
@@ -121,5 +122,26 @@ public class EditFriendsActivity extends ListActivity {
 			// Click unselected the Friend.
 		}
 		
+	}
+	
+	private void addFriendCheckmarks(){
+		mFriendsRelation.getQuery().findInBackground(new FindCallback<ParseUser>() {
+			@Override
+			public void done(List<ParseUser> friends, ParseException e) {
+				if (e==null) {
+					// checkFriends
+					for (int i=0; i<mUsers.size(); i++) {
+						for(ParseUser friend : friends) {
+							if(friend.getObjectId().equals(mUsers.get(i).getObjectId())) {
+								getListView().setItemChecked(i, true);
+							}
+						}
+					}
+				}
+				else {
+					Log.e(TAG, e.getMessage());
+				}
+			}
+		});
 	}
 }
