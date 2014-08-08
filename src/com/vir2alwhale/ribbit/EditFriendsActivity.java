@@ -21,6 +21,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class EditFriendsActivity extends ListActivity {
+	
 	public static final String TAG = EditFriendsActivity.class.getSimpleName();
 	
 	protected List<ParseUser> mUsers;
