@@ -35,13 +35,6 @@ public class EditFriendsActivity extends ListActivity {
 		setContentView(R.layout.activity_edit_friends);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.edit_friends, menu);
-		return true;
-	}
 	
 	@Override
 	protected void onResume() {
@@ -106,22 +99,24 @@ public class EditFriendsActivity extends ListActivity {
 		super.onListItemClick(l, v, position, id);
 		
 		if(getListView().isItemChecked(position)) {
-			// Click selected the Friend.
+			// Click selected the username.
 			// Adds relation locally.
 			mFriendsRelation.add(mUsers.get(position));	
-			// Save changes to user (adds relation) on parse.com.
-			mCurrentUser.saveInBackground(new SaveCallback() {
-				@Override
-				public void done(ParseException e) {
-					if(e != null) {
-						Log.e(TAG, e.getMessage());
-					}
-				}
-			});
 		}
 		else {
-			// Click unselected the Friend.
+			// Click unselected the username.
+			// Removes relation locally.
+			mFriendsRelation.remove(mUsers.get(position));
 		}
+		// Save changes to user on parse.com.
+					mCurrentUser.saveInBackground(new SaveCallback() {
+						@Override
+						public void done(ParseException e) {
+							if(e != null) {
+								Log.e(TAG, e.getMessage());
+							}
+						}
+					});
 		
 	}
 	
