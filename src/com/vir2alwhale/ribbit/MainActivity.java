@@ -201,6 +201,20 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	// TODO Auto-generated method stub
+    	super.onActivityResult(requestCode, resultCode, data);
+    	if(resultCode == RESULT_OK) {
+    		Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+    		mediaScanIntent.setData(mMediaUri);
+    		sendBroadcast(mediaScanIntent);
+    	}
+    	else if(resultCode != RESULT_CANCELED) {
+    		Toast.makeText(this, R.string.general_error, Toast.LENGTH_LONG).show();
+    	}
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
