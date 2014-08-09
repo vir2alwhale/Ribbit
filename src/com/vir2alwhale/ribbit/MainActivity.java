@@ -1,26 +1,22 @@
 package com.vir2alwhale.ribbit;
 
-import java.util.Locale;
-
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
@@ -28,6 +24,15 @@ import com.parse.ParseUser;
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
+    public static final int TAKE_PHOTO_REQUEST = 0;
+    public static final int TAKE_VIDEO_REQUEST = 1;
+    public static final int PICK_PHOTO_REQUEST = 2;
+    public static final int PICK_VIDEO_REQUEST = 3;
+    
+    public static final int MEDIA_TYPE_IMAGE = 4;
+    public static final int MEDIA_TYPE_VIDEO = 5;
+    
+    protected Uri mMediaUri;
     
     protected DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
 		
@@ -36,6 +41,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			switch(which) {
 			case 0:
 				// Take picture
+				Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				mMediaUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+				if(mMediaUri == null) {
+					Toast.makeText(MainActivity.this, R.string.error_external_storage, Toast.LENGTH_LONG).show();
+				}
+				else {
+					takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
+					startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
+				}
 				break;
 			case 1:
 				// Take video
@@ -48,6 +62,28 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				break;
 			}
 			
+		}
+
+		private Uri getOutputMediaFileUri(int mediaType) {
+		    // To be safe, you should check that the SDCard is mounted
+		    // using Environment.getExternalStorageState() before doing this.
+			if(isExternalStorageAvailable()) {
+				// get the Uri
+				return null;
+			}
+			else {
+				return null;
+			}
+		}
+
+		private boolean isExternalStorageAvailable() {
+			String state = Environment.getExternalStorageState();
+			if (state.equals(Environment.MEDIA_MOUNTED)) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 	};
 	
