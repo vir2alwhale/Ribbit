@@ -1,9 +1,11 @@
 package com.vir2alwhale.ribbit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -27,13 +30,20 @@ public class RecipientsActivity extends ListActivity {
 	protected List<ParseUser> mFriends;
 	protected ParseRelation<ParseUser> mFriendsRelation;
 	protected MenuItem mSendMenuItem;
+	
+	protected Uri mMediaUri;
+	protected String mFileType;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_recipients);
+		
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		
+		mMediaUri = getIntent().getData();
+		mFileType = getIntent().getExtras().getString(ParseConstants.KEY_FILE_TYPE);
 	}
 	
 	@Override
@@ -105,8 +115,30 @@ public class RecipientsActivity extends ListActivity {
 		int id = item.getItemId();
 		switch(id) {
 		case R.id.action_send:
+			ParseObject message = createMessage();
+			// send(message);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	protected ParseObject createMessage() {
+		ParseObject message = new ParseObject(ParseConstants.CLASS_MESSAGES);
+		message.put(ParseConstants.KEY_SENDER_ID, ParseUser.getCurrentUser().getObjectId());
+		message.put(ParseConstants.KEY_SENDER_NAME, ParseUser.getCurrentUser().getUsername());
+		message.put(ParseConstants.KEY_RECIPIENT_IDS, getRecipentIds());
+		message.put(ParseConstants.KEY_FILE_TYPE, mFileType);
+				
+		return message;
+	}
+
+	protected ArrayList<String> getRecipentIds() {
+		ArrayList<String> recipientIds =  new ArrayList<String>();
+			for(int i=0; i<getListView().getCount(); i++) {
+				if(getListView().isItemChecked(i)) {
+					recipientIds.add(mFriends.get(i).getObjectId());
+				}
+			}
+		return recipientIds;
 	}
 }
