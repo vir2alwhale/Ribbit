@@ -33,4 +33,6 @@
         <item >Choose Picture</item>
         <item >Choose Video</item>
     </string-array>
+        <string name="video_file_size_warning">There was a problem with the selected file.</string>
+        <string name="error_file_size_too_large">Selected file is too large. Select a new file.</string>
 </resources>
