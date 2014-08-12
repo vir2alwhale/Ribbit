@@ -250,10 +250,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     						inputStream = getContentResolver().openInputStream(mMediaUri);
     						fileSize = inputStream.available();
     					} catch(FileNotFoundException e) {
-    						Toast.makeText(this, R.string.video_file_size_warning, Toast.LENGTH_LONG).show();
+    						Toast.makeText(this, R.string.error_opening_file, Toast.LENGTH_LONG).show();
     						return;
     					} catch(IOException e) {
-    						Toast.makeText(this, R.string.video_file_size_warning, Toast.LENGTH_LONG).show();
+    						Toast.makeText(this, R.string.error_opening_file, Toast.LENGTH_LONG).show();
     						return;
     					} finally {
     						try {
@@ -274,6 +274,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    		mediaScanIntent.setData(mMediaUri);
 	    		sendBroadcast(mediaScanIntent);
     		}
+    		Intent recipientsIntent = new Intent(this, RecipientsActivity.class);
+    		recipientsIntent.setData(mMediaUri);
+    		startActivity(recipientsIntent);
     	}
     	else if(resultCode != RESULT_CANCELED) {
     		Toast.makeText(this, R.string.general_error, Toast.LENGTH_LONG).show();
