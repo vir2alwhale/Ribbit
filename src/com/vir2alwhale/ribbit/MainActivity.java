@@ -73,6 +73,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				break;
 			case 2:
 				// Choose picture
+				Intent choosePhotoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+				choosePhotoIntent.setType("image/*");
+				startActivityForResult(choosePhotoIntent, PICK_PHOTO_REQUEST);
 				break;
 			case 3:
 				// Choose video
@@ -219,9 +222,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     	// TODO Auto-generated method stub
     	super.onActivityResult(requestCode, resultCode, data);
     	if(resultCode == RESULT_OK) {
-    		Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-    		mediaScanIntent.setData(mMediaUri);
-    		sendBroadcast(mediaScanIntent);
+    		// User either chooses photo or video.
+    		if(requestCode == PICK_PHOTO_REQUEST || requestCode == PICK_VIDEO_REQUEST) {
+    			if(data == null) {
+    				Toast.makeText(this,getString(R.string.general_error), Toast.LENGTH_LONG).show();
+    			}
+    			else {
+    				mMediaUri = data.getData();
+    			}
+    		}
+    		// User creates either photo or video.
+    		else {
+	    		Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+	    		mediaScanIntent.setData(mMediaUri);
+	    		sendBroadcast(mediaScanIntent);
+    		}
     	}
     	else if(resultCode != RESULT_CANCELED) {
     		Toast.makeText(this, R.string.general_error, Toast.LENGTH_LONG).show();
