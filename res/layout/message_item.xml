@@ -5,6 +5,7 @@
 
     <ImageView
         android:id="@+id/messageIcon"
+        android:contentDescription="@string/custom_list_adapter_icon_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
