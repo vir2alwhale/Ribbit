@@ -28,6 +28,7 @@
     <string name="error_external_storage">There was a problem accesing your device\'s external storage.</string>
     <string name="general_error">Sorry, there was an error!</string>
     <string name="custom_list_adapter_icon_description">Icon</string>
+    <string name="message_image_description">Image from friend.</string>
 
     <string-array name="camera_choices">
         <item>Take Picture</item>
@@ -45,5 +46,6 @@
     <string name="error_selecting_file">There was an error with the selected file. Please select a different file.</string>
     <string name="error_selecting_file_title">We\'re sorry!</string>
     <string name="error_sending_message">There was an error sending your message. Please try again.</string>
+    <string name="title_activity_view_image">ViewImageActivity</string>
 
 </resources>
